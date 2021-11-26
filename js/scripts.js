@@ -1,10 +1,120 @@
 /*!
-* Start Bootstrap - Business Casual v7.0.4 (https://startbootstrap.com/theme/business-casual)
+* Start Bootstrap - Stylish Portfolio v6.0.4 (https://startbootstrap.com/theme/stylish-portfolio)
 * Copyright 2013-2021 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-business-casual/blob/master/LICENSE)
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-stylish-portfolio/blob/master/LICENSE)
 */
-// Highlights current date on contact page
 window.addEventListener('DOMContentLoaded', event => {
-    const listHoursArray = document.body.querySelectorAll('.list-hours li');
-    listHoursArray[new Date().getDay()].classList.add(('today'));
+
+    const sidebarWrapper = document.getElementById('sidebar-wrapper');
+    let scrollToTopVisible = false;
+    // Closes the sidebar menu
+    const menuToggle = document.body.querySelector('.menu-toggle');
+    menuToggle.addEventListener('click', event => {
+        event.preventDefault();
+        sidebarWrapper.classList.toggle('active');
+        _toggleMenuIcon();
+        menuToggle.classList.toggle('active');
+    })
+
+    // Closes responsive menu when a scroll trigger link is clicked
+    var scrollTriggerList = [].slice.call(document.querySelectorAll('#sidebar-wrapper .js-scroll-trigger'));
+    scrollTriggerList.map(scrollTrigger => {
+        scrollTrigger.addEventListener('click', () => {
+            sidebarWrapper.classList.remove('active');
+            menuToggle.classList.remove('active');
+            _toggleMenuIcon();
+        })
+    });
+
+    function _toggleMenuIcon() {
+        const menuToggleBars = document.body.querySelector('.menu-toggle > .fa-bars');
+        const menuToggleTimes = document.body.querySelector('.menu-toggle > .fa-times');
+        if (menuToggleBars) {
+            menuToggleBars.classList.remove('fa-bars');
+            menuToggleBars.classList.add('fa-times');
+        }
+        if (menuToggleTimes) {
+            menuToggleTimes.classList.remove('fa-times');
+            menuToggleTimes.classList.add('fa-bars');
+        }
+    }
+
+    // Scroll to top button appear
+    document.addEventListener('scroll', () => {
+        const scrollToTop = document.body.querySelector('.scroll-to-top');
+        if (document.documentElement.scrollTop > 100) {
+            if (!scrollToTopVisible) {
+                fadeIn(scrollToTop);
+                scrollToTopVisible = true;
+            }
+        } else {
+            if (scrollToTopVisible) {
+                fadeOut(scrollToTop);
+                scrollToTopVisible = false;
+            }
+        }
+    })
 })
+
+function fadeOut(el) {
+    el.style.opacity = 1;
+    (function fade() {
+        if ((el.style.opacity -= .1) < 0) {
+            el.style.display = "none";
+        } else {
+            requestAnimationFrame(fade);
+        }
+    })();
+};
+
+function fadeIn(el, display) {
+    el.style.opacity = 0;
+    el.style.display = display || "block";
+    (function fade() {
+        var val = parseFloat(el.style.opacity);
+        if (!((val += .1) > 1)) {
+            el.style.opacity = val;
+            requestAnimationFrame(fade);
+        }
+    })();
+};
+
+$('#portfolioModal01').on('hide.bs.modal', () => {
+    $('#videoUnity').attr('src', '');
+});
+
+$(document).ready(function () {
+
+
+
+    $(".tabs").click(function () {
+
+        $(".tabs").removeClass("active");
+        $(".tabs h6").removeClass("font-weight-bold");
+        $(".tabs h6").addClass("text-muted");
+        $(this).children("h6").removeClass("text-muted");
+        $(this).children("h6").addClass("font-weight-bold");
+        $(this).addClass("active");
+
+        current_fs = $(".active");
+
+        next_fs = $(this).attr('id');
+        next_fs = "#" + next_fs + "1";
+
+        $("fieldset").removeClass("show");
+        $(next_fs).addClass("show");
+
+        current_fs.animate({}, {
+            step: function () {
+                current_fs.css({
+                    'display': 'none',
+                    'position': 'relative'
+                });
+                next_fs.css({
+                    'display': 'block'
+                });
+            }
+        });
+    });
+
+});
